@@ -17,7 +17,7 @@
   <img src="https://img.shields.io/badge/Node.js-20%2B-5FA04E?style=flat-square&amp;logo=nodedotjs&amp;logoColor=white" alt="Node.js 20+">
 </p>
 
-[场景与玩法](#features) · [快速开始](#quick-start) · [操作指南](#controls) · [开发与检查](#development) · [常见问题](#faq) · [素材来源](#provenance) · [许可证](#license)
+[场景与玩法](#features) · [观赏版下载](#release) · [完整互动版](#quick-start) · [操作指南](#controls) · [文件归类](#layout) · [常见问题](#faq) · [素材来源](#provenance) · [许可证](#license)
 
 </div>
 
@@ -25,7 +25,12 @@
 
 Varesa World 3D 是基于 **Three.js** 的第三人称互动场景。便利店、街道、灯光、雨水和大部分道具由代码构建；角色使用瓦雷莎的官方 MMD 模型，走跑动作由 CMU 动捕数据适配。当前版本适合单人探索，浏览器中的进度只保留到本次页面关闭或刷新。
 
-> **关于 GitHub 仓库**：这里提供源码、构建脚本与来源说明。原模型说明禁止二次配布，所以官方角色模型、贴图、内嵌资源以及包含模型的可玩 HTML **不随仓库上传**。克隆仓库后，需要自行从原始发布页取得模型，才能在本地构建游戏。
+<div align="center">
+  <img src="docs/viewer-preview.png" width="860" alt="雨夜街角观赏版：便利店、湿地倒影与微缩街区">
+  <p><sub>可公开下载的街角观赏版画面，不含人物与购物玩法</sub></p>
+</div>
+
+> **关于两个版本**：GitHub 仓库提供源码与构建脚本；Release 可提供**无角色的街角观赏版**。完整互动版的 HTML 内嵌官方角色模型与贴图；原模型说明禁止二次配布，所以该 HTML 和本地游玩包保留在各自电脑上。想玩完整互动版，需要自行从原始发布页取得模型并在本地构建。
 
 <a id="features"></a>
 
@@ -41,11 +46,27 @@ Varesa World 3D 是基于 **Three.js** 的第三人称互动场景。便利店�
 
 场景包含 **175 个互动目标**，其中 **143 个为可拿取商品**。街角与店内使用不同的灯光和环境声；湿地反光、雨丝、积水波纹与霓虹辉光共同营造动画雨夜氛围。
 
+上表介绍的是**完整互动版**。公开观赏版保留街角模型、雨夜灯光和自由观察操作，不包含人物、背包或购物互动。
+
+<a id="release"></a>
+
+## GitHub Release：街角观赏版
+
+准备上传到 [GitHub Releases](https://github.com/w2902171175/Varesa-World3D/releases) 的文件位于本地 `release/`：
+
+| 本地文件 | 用途 | 上传建议 |
+| --- | --- | --- |
+| `Varesa-World3D-rainy-corner-viewer-v1.0.0.zip` | 观赏版 HTML、使用说明及两份许可证 | **主要 Release 附件** |
+| `Varesa-World3D-rainy-corner-viewer-v1.0.0.html` | 单文件观赏版，下载后可直接双击 | 可选附件 |
+| `UPLOAD-INSTRUCTIONS.txt` | 给上传者的文件清单与区别说明 | 留在本地 |
+
+观赏版支持鼠标拖动旋转、滚轮缩放、右键平移和触屏操作；无需安装 Node.js，也不包含瓦雷莎模型。该 `release/` 目录整体被 `.gitignore` 排除，**由仓库所有者手动上传 ZIP 到 GitHub Release**。源码克隆后运行 `npm ci`、`npm run package:viewer` 可重新生成相同用途的交付文件。
+
 <a id="quick-start"></a>
 
-## 快速开始
+## 完整互动版：本地构建
 
-### 从源码构建
+### 准备并构建
 
 需要 **Node.js 20 或更新版本**。先按 [角色来源说明](assets/character/SOURCE.md) 中的原始发布页自行下载官方模型，并将文件完整解压到 `assets/character/official/`。确认该目录直接包含角色 `.pmx`、`skin.bmp`、`hair.bmp`、`tex/` 和 `sph/` 等文件。
 
@@ -59,7 +80,7 @@ npm run build
 
 构建完成后，双击 **`Output/瓦雷莎·雨夜便利店.html`** 即可离线游玩。`Output/index.html` 是同目录下的轻量入口，会自动打开主游戏。角色、贴图与脚本已内嵌在主 HTML 中，本机双击游玩不需要保持服务运行。
 
-> 已有完整的本地工作目录可以直接打开生成的 HTML。GitHub 克隆只包含源码；如果缺少模型，构建会提示先完成上述本地准备步骤。
+> 上面的 `Output/` 文件是在**本地完成构建后才会出现**的，既不在仓库文件列表里，也不是公开 Release 的下载文件。已有完整的本地工作目录可以直接打开原先生成的 HTML。
 
 ### 本机游玩与分享
 
@@ -110,6 +131,7 @@ npm run build
 | `src/` | 街景、店铺、角色控制、相机、碰撞、交互、背包与雨夜效果 |
 | `assets/motion/` | CMU 原始动作、处理脚本、循环数据及来源说明 |
 | `assets/character/` | 模型来源与本地资源生成脚本；实际模型及生成的 `embedded.js` 被 Git 忽略 |
+| `viewer/` | 不含角色模型的街角观赏版源码和单文件构建脚本 |
 | `tests/`、`qa/` | 自动化测试、手动检查脚本与历史核对记录 |
 | `build.mjs`、`serve.mjs` | 将游戏打包为单个离线 HTML；开启本机预览服务 |
 | `start.bat`、`stop.bat` | 本机／局域网／公网启动与项目服务停止 |
@@ -118,20 +140,35 @@ npm run build
 
 ```powershell
 npm test
+npm run build:viewer
+npm run package:viewer
 npm run audit:secrets
 npm run test:source
 npm run serve
 ```
 
-`npm test` 检查控制、相机、碰撞、背包、交易与角色动作。有本地模型时会运行真实 PMX 骨骼测试；从 GitHub 克隆且尚未安装模型时，该测试明确跳过。`audit:secrets` 扫描 Git 候选文件中的常见密钥格式，仅显示文件名和规则；`test:source` 在临时目录验证只含仓库文件的克隆状态。需要重新生成角色动作预览时，先准备本地模型，再运行 `node qa/motion/build-preview.mjs`。
+`npm test` 检查控制、相机、碰撞、背包、交易与角色动作。有本地模型时会运行真实 PMX 骨骼测试；从 GitHub 克隆且尚未安装模型时，该测试明确跳过。`build:viewer` 与 `package:viewer` 不需要角色模型，分别生成观赏版 HTML 和 Release ZIP。`audit:secrets` 扫描 Git 候选文件中的常见密钥格式，仅显示文件名和规则；`test:source` 在临时目录验证只含仓库文件的克隆状态。需要重新生成角色动作预览时，先准备本地模型，再运行 `node qa/motion/build-preview.mjs`。
 
-本地 `Output/`、`node_modules/`、`.runtime/`、`游玩地址.txt` 及测试生成的图片和 HTML 均由 `.gitignore` 排除。**请使用 Git 或 GitHub Desktop 提交文件**；不要把整个本地目录打包或拖入 GitHub 网页上传，因为网页手动上传不会按本地 `.gitignore` 筛选模型和生成页面。
+<a id="layout"></a>
+
+## 文件归类
+
+| 位置 | 归属 | 说明 |
+| --- | --- | --- |
+| `src/`、`viewer/`、`scripts/`、`assets/motion/`、`docs/` | GitHub 仓库 | 游戏源码、观赏版源码、动作数据、仓库图标与无角色场景预览图 |
+| `assets/character/SOURCE.md`、`assets/character/prepare-assets.mjs` | GitHub 仓库 | 模型来源及本地处理步骤，不含模型数据 |
+| `release/` | **Git 忽略；手动传 Release** | 可公开的无角色观赏版 HTML、ZIP 与许可证 |
+| `Output/` | **仅本地；不可作为公开附件** | 包含瓦雷莎模型的完整游戏 HTML、本地游玩包及说明 |
+| `assets/character/official/`、`assets/character/embedded.js` | **仅本地** | 官方原模型、贴图和从其生成的内嵌资源 |
+| `node_modules/`、`.runtime/`、`游玩地址.txt` | Git 忽略 | 可重建依赖与运行状态 |
+
+**请使用 Git 或 GitHub Desktop 提交仓库文件**；不要把整个本地目录打包或拖入 GitHub 网页上传，因为网页手动上传不会按本地 `.gitignore` 筛选。Release 上传前请按 `release/UPLOAD-INSTRUCTIONS.txt` 核对附件。
 
 <a id="faq"></a>
 
 ## 常见问题
 
-**克隆仓库后为什么没有可玩的 HTML？** 生成的 HTML 内嵌了官方角色模型与贴图，因原模型使用说明禁止二次配布，所以仓库只上传源码。按[快速开始](#quick-start)下载原模型并本地构建即可。
+**克隆仓库后为什么没有完整互动版的 HTML？** 该文件内嵌官方角色模型与贴图，因原模型使用说明禁止二次配布，所以仓库只上传源码。按[完整互动版构建步骤](#quick-start)下载原模型并在本地生成；只想看场景可下载[无角色观赏版](#release)。
 
 **双击 HTML 和运行 `start.bat` 有什么区别？** 已构建的主 HTML 可以直接离线游玩；`start.bat` 会启动服务，适合自动打开本机页面或给同一局域网、外网的朋友网址。
 

@@ -13,7 +13,7 @@ if(dirname(snapshot)!==tempRoot||!inside(tempRoot,snapshot)||!snapshot.split(sep
 async function run(command,args,{cwd=snapshot}={}){
  return new Promise((finish,reject)=>{
   const windowsNpm=process.platform==='win32'&&command==='npm';
-  if(windowsNpm&&!args.every(arg=>/^[a-z0-9_-]+$/i.test(arg)))throw new Error('Unexpected npm argument');
+  if(windowsNpm&&!args.every(arg=>/^[a-z0-9_:-]+$/i.test(arg)))throw new Error('Unexpected npm argument');
   const executable=windowsNpm?join(process.env.SystemRoot||'C:\\Windows','System32','cmd.exe'):command;
   const parameters=windowsNpm?['/d','/s','/c',`npm.cmd ${args.join(' ')}`]:args;
   const child=spawn(executable,parameters,{cwd,windowsHide:true,stdio:['ignore','pipe','pipe']});
@@ -44,10 +44,15 @@ try{
  if(installed.code!==0)throw new Error('Clean install failed:\n'+installed.output);
  const tested=await run('npm',['test']);
  if(tested.code!==0)throw new Error('Source-only tests failed:\n'+tested.output);
+ const viewer=await run('npm',['run','build:viewer']);
+ if(viewer.code!==0)throw new Error('Model-free viewer did not build from public source:\n'+viewer.output);
+ const viewerHtml=await readFile(join(snapshot,'release','Varesa-World3D-rainy-corner-viewer-v1.0.0.html'),'utf8');
+ if(!viewerHtml.includes('雨夜街角观赏版')||viewerHtml.length<100000)throw new Error('Model-free viewer output is incomplete');
  const built=await run(process.execPath,['build.mjs']);
  if(built.code===0||!built.output.includes('缺少本地角色资源'))throw new Error('Missing-model build message was not clear:\n'+built.output);
  const summary=tested.output.match(/# tests \d+[\s\S]*?# duration_ms [\d.]+/)?.[0];
  console.log(`Checked ${names.length} public Git candidates in a clean snapshot.`);
  console.log(summary||'Source-only tests passed.');
+ console.log('Model-free viewer builds from public source.');
  console.log('Build correctly explains the locally required official model.');
 }finally{await clearSnapshot(snapshot);}
