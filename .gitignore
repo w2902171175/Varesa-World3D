@@ -1,0 +1,57 @@
+# Local dependencies and runtime state
+/node_modules/
+/.runtime/
+/游玩地址.txt
+/vendor/
+/.cache/
+/coverage/
+/dist/
+
+# Generated playable builds and historical copies. The playable HTML embeds
+# the third-party character model and textures, so it is local-only.
+/Output/
+/archive/
+
+# Official character download, extracted model/textures, and derived bundle.
+# Keep SOURCE.md and prepare-assets.mjs in the repository.
+/assets/character/official/
+/assets/character/varesa-official.zip
+/assets/character/embedded.js
+/assets/character/official-reference.png
+/assets/character/official-distribution.html
+
+# Reproducible intermediate motion captures (the final cycles.js is source).
+/assets/motion/walk-capture.json
+/assets/motion/run-capture.json
+
+# QA outputs and third-party reference screenshots. Keep QA scripts and notes.
+/qa/**/*.html
+/qa/**/*.png
+/qa/**/*.jpg
+/qa/**/*.jpeg
+/qa/**/*.webp
+/qa/**/*.txt
+/qa/public-tunnel-result.json
+/qa/public-game-verification.json
+
+# Local credentials and editor/system caches
+.env
+.env.*
+!.env.example
+*.local
+*.pem
+*.key
+*.p12
+*.pfx
+*.p8
+*.crt
+id_rsa*
+id_ed25519*
+*.log
+*.tmp
+*.cache
+*.tsbuildinfo
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

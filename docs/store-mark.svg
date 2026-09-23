@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="雨夜便利店图标">
+  <defs>
+    <linearGradient id="night" x2="0" y2="1">
+      <stop stop-color="#233f59"/>
+      <stop offset="1" stop-color="#122435"/>
+    </linearGradient>
+    <linearGradient id="light" x2="0" y2="1">
+      <stop stop-color="#ffe6b4"/>
+      <stop offset="1" stop-color="#efad79"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#night)"/>
+  <path d="M9 52h46M12 56h10m6 0h9m6 0h9" fill="none" stroke="#79b5be" stroke-width="2" stroke-linecap="round" opacity=".65"/>
+  <path d="M13 25h38v26H13z" fill="url(#light)"/>
+  <path d="M13 19h38v8H13z" fill="#edf1e7"/>
+  <path d="M13 19h7v8h-7zm14 0h8v8h-8zm16 0h8v8h-8z" fill="#65c6c3"/>
+  <path d="M18 31h15v20H18zm19 0h9v12h-9z" fill="#34536a"/>
+  <path d="M25.5 31v20M37 37h9" stroke="#a8d8d3" stroke-width="1.5" opacity=".75"/>
+  <path d="M11 13l-1.5 3m11-5-1.5 3m28-2-1.5 3m7-5-1.5 3" stroke="#a6d7e6" stroke-width="1.8" stroke-linecap="round" opacity=".85"/>
+</svg>

@@ -1,0 +1,30 @@
+import * as THREE from 'three';
+import {createCharacter} from '../../src/character.js';
+import {createInteractions} from '../../src/interactions.js';
+const canvas=document.querySelector('canvas'),scene=new THREE.Scene();scene.background=new THREE.Color('#142431');
+const camera=new THREE.PerspectiveCamera(34,innerWidth/innerHeight,.1,60),renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
+scene.add(new THREE.HemisphereLight('#d3dce7','#697d81',1.25));const key=new THREE.DirectionalLight('#ffe4c6',1.5);key.position.set(2,7,4);scene.add(key);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.MeshToonMaterial({color:'#39525c'}));floor.rotation.x=-Math.PI/2;floor.position.y=-.006;scene.add(floor);
+const grid=new THREE.GridHelper(40,80,'#527b86','#425f68');grid.position.y=.001;scene.add(grid);
+const actor=createCharacter(scene);let ready=false,mode='walk',view='side',time=0,last=performance.now(),theta=-Math.PI/2,lastSpeed=0,lastYaw=0,oldY=0,oldVy=0;
+let gear=null;
+actor.ready.then(()=>{gear=createInteractions({THREE,scene:new THREE.Scene(),playerRoot:actor.root,handSocket:actor.sockets.rightHand});actor.root.position.set(3.35,.30,3);actor.root.rotation.y=Math.PI;gear.interact('umbrella');gear.stowHeld();actor.root.position.set(0,0,0);actor.root.rotation.y=0;ready=true;document.querySelector('p').textContent='瓦雷莎 · 动作与持物预览';});
+const previous=new THREE.Vector3(),velocity=new THREE.Vector3(),previousVelocity=new THREE.Vector3();
+for(const button of document.querySelectorAll('button'))button.addEventListener('click',()=>{if(button.dataset.gear){if(!gear)return;if(button.dataset.gear==='stored')gear.stowHeld();else if(button.dataset.gear==='closed')gear.equipItem('umbrella');else{if(!gear.getState().umbrellaEquipped)gear.equipItem('umbrella');if(!gear.getState().umbrella)gear.toggleUmbrella();}}else if(button.dataset.mode){mode=button.dataset.mode;time=0;}else view=button.dataset.view;for(const b of document.querySelectorAll('button'))if(!b.dataset.gear)b.dataset.active=String(b.dataset.mode===mode||b.dataset.view===view);});
+function tick(now){requestAnimationFrame(tick);const dt=Math.min(.04,(now-last)/1000);last=now;if(!ready){renderer.render(scene,camera);return;}time+=dt;
+ const wanted=mode==='walk'?1.45:mode==='run'?3.15:mode==='turn'?1.05:0,speed=THREE.MathUtils.damp(lastSpeed,wanted,10,dt);lastSpeed=speed;
+ previous.copy(actor.root.position);theta+=speed/2.4*dt;actor.root.position.set((Math.sin(theta)+1)*2.4,0,Math.cos(theta)*2.4);
+ let vy=0,airborne=false,landed=false,started=false,preparing=false;
+ if(mode==='jump'){const cycle=time%2.0;if(cycle<.10)preparing=true;else if(cycle<.9){const p=(cycle-.1)/.8;actor.root.position.y=Math.sin(p*Math.PI)*.72;vy=Math.cos(p*Math.PI)*Math.PI/.8*.72;airborne=true;started=oldY<=0; }landed=oldY>0&&!airborne;}
+ velocity.copy(actor.root.position).sub(previous).divideScalar(dt);velocity.y=0;
+ const yaw=speed>.01?Math.atan2(velocity.x,velocity.z):actor.root.rotation.y;actor.root.rotation.y=yaw;
+ const rate=Math.atan2(Math.sin(yaw-lastYaw),Math.cos(yaw-lastYaw))/dt,c=Math.cos(yaw),s=Math.sin(yaw),acc=velocity.clone().sub(previousVelocity).divideScalar(dt);if(acc.length()>30)acc.setLength(30);
+ gear?.update(dt,time);const equipment=gear?.getState()||{};
+ actor.update(dt,{time,speed, distance:speed*dt,moving:speed>.03,running:mode==='run',localVelocity:{x:c*velocity.x-s*velocity.z,z:s*velocity.x+c*velocity.z},acceleration:{x:c*acc.x-s*acc.z,z:s*acc.x+c*acc.z},turnRate:rate,grounded:!airborne,jumping:airborne,verticalVelocity:vy,jumpHeight:actor.root.position.y,landed,landingSpeed:Math.max(0,-oldVy),jumpStarted:started,jumpPreparing:preparing,jumpPreparation:preparing?(time%2)/.1:0,umbrella:equipment.umbrella,umbrellaOpen:equipment.umbrellaOpen,umbrellaEquipped:equipment.umbrellaEquipped});
+ lastYaw=yaw;oldY=actor.root.position.y;oldVy=vy;previousVelocity.copy(velocity);
+ const offset=view==='side'?new THREE.Vector3(-4,1.9,1.3):new THREE.Vector3(.3,1.8,4.2);offset.applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
+ camera.position.copy(actor.root.position).add(offset);camera.lookAt(actor.root.position.clone().add(new THREE.Vector3(0,.85,0)));renderer.render(scene,camera);
+ const debug=actor.motion?.getDebugState();canvas.dataset.mode=mode;canvas.dataset.phase=debug?.phase?.toFixed(3)||'';canvas.dataset.ready='true';for(const b of document.querySelectorAll('button[data-gear]'))b.dataset.active=String(b.dataset.gear===(equipment.umbrella?'open':equipment.umbrellaEquipped?'closed':'stored'));
+}
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});requestAnimationFrame(tick);

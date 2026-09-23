@@ -1,0 +1,20 @@
+* text=auto
+/.gitattributes text eol=lf
+/.gitignore text eol=lf
+
+# Windows launcher scripts need their native line endings.
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Keep source text consistent across operating systems.
+*.js text eol=lf
+*.mjs text eol=lf
+*.css text eol=lf
+*.svg text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+
+# Preserve the original CMU capture files byte-for-byte, including their
+# intentional spacing. Generated cycles.js remains normal source text.
+assets/motion/*.asf -text whitespace=-blank-at-eol
+assets/motion/*.amc -text whitespace=-blank-at-eol
