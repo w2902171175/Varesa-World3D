@@ -2,9 +2,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {ensureOfficialAssets} from './download-official.mjs';
 const base=path.dirname(fileURLToPath(import.meta.url));
 const official=path.join(base,'official');
-if(!fs.existsSync(official))throw new Error('未找到 assets/character/official/。请先按 README.md 从原始发布页下载并解压模型。');
+await ensureOfficialAssets({base});
 const model=fs.readdirSync(official).find(n=>n.endsWith('.pmx')&&fs.statSync(path.join(official,n)).size>1000000);
 if(!model)throw new Error('未找到官方角色 PMX 文件。请确认模型文件位于 assets/character/official/ 目录。');
 const textures=['tex/颜.png','skin.bmp','tex/髮.png','hair.bmp','tex/体.png','toon_defo.bmp','tex/肌.png','tex/面具.png','tex/spa_h.png','sph/hair_s.bmp'];

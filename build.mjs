@@ -1,7 +1,7 @@
 import {build} from 'esbuild';
 import {readFile,writeFile,copyFile,access,mkdir} from 'node:fs/promises';
 try{await access('assets/character/embedded.js');}
-catch{throw new Error('缺少本地角色资源。请先按 README.md 从原始发布页取得模型，解压到 assets/character/official/，再运行 npm run prepare:character。');}
+catch{throw new Error('缺少本地角色资源。请运行 npm run build（会先从原始发布地址准备模型），或单独运行 npm run prepare:character；详情见 README.md。');}
 await mkdir('Output',{recursive:true});
 const result=await build({entryPoints:['src/main.js'],bundle:true,format:'iife',target:'es2020',minify:true,write:false,legalComments:'inline'});
 const script=result.outputFiles[0].text.replaceAll('</script','<\\/script');

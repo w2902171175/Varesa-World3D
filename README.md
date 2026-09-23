@@ -30,7 +30,7 @@ Varesa World 3D 是基于 **Three.js** 的第三人称互动场景。便利店�
   <p><sub>可公开下载的街角观赏版画面，不含人物与购物玩法</sub></p>
 </div>
 
-> **关于两个版本**：GitHub 仓库提供源码与构建脚本；Release 可提供**无角色的街角观赏版**。完整互动版的 HTML 内嵌官方角色模型与贴图；原模型说明禁止二次配布，所以该 HTML 和本地游玩包保留在各自电脑上。想玩完整互动版，需要自行从原始发布页取得模型并在本地构建。
+> **关于两个版本**：GitHub 仓库提供源码与构建脚本；Release 可提供**无角色的街角观赏版**。完整互动版的 HTML 内嵌官方角色模型与贴图；原模型说明禁止二次配布，所以该 HTML 和本地游玩包保留在各自电脑上。克隆仓库后运行 `npm run build`，脚本会从[原始发布地址](assets/character/SOURCE.md)获取并校验模型，在本地生成游戏，不需要手工解压。
 
 <a id="features"></a>
 
@@ -62,19 +62,18 @@ Varesa World 3D 是基于 **Three.js** 的第三人称互动场景。便利店�
 
 ### 准备并构建
 
-需要 **Node.js 20 或更新版本**。先按 [角色来源说明](assets/character/SOURCE.md) 中的原始发布页自行下载官方模型，并将文件完整解压到 `assets/character/official/`。确认该目录直接包含角色 `.pmx`、`skin.bmp`、`hair.bmp`、`tex/` 和 `sph/` 等文件。
+需要 **Node.js 20 或更新版本**。首次构建需要联网：构建前脚本会从[官方原始发布地址](assets/character/SOURCE.md)下载压缩包，核对仓库记录的 SHA-256，然后仅在本地解压到被 Git 忽略的 `assets/character/official/`。已有完整模型时会直接使用本地文件。
 
 在项目根目录执行：
 
 ```powershell
 npm ci
-npm run prepare:character
 npm run build
 ```
 
 构建完成后，双击 **`Output/瓦雷莎·雨夜便利店.html`** 即可离线游玩。`Output/index.html` 是同目录下的轻量入口，会自动打开主游戏。角色、贴图与脚本已内嵌在主 HTML 中，本机双击游玩不需要保持服务运行。
 
-> 上面的 `Output/` 文件是在**本地完成构建后才会出现**的，既不在仓库文件列表里，也不是公开 Release 的下载文件。已有完整的本地工作目录可以直接打开原先生成的 HTML。
+> 上面的 `Output/` 文件是在**本地完成构建后才会出现**的，既不在仓库文件列表里，也不是公开 Release 的下载文件。官方源地址无法访问时，也可按[模型来源说明](assets/character/SOURCE.md)自行下载原 ZIP，放到 `assets/character/varesa-official.zip` 后重试构建；脚本同样会校验并解压，无需手动处理 GBK 文件名。
 
 ### 本机游玩与分享
 
@@ -124,7 +123,7 @@ npm run build
 | --- | --- |
 | `src/` | 街景、店铺、角色控制、相机、碰撞、交互、背包与雨夜效果 |
 | `assets/motion/` | CMU 原始动作、处理脚本、循环数据及来源说明 |
-| `assets/character/` | 模型来源与本地资源生成脚本；实际模型及生成的 `embedded.js` 被 Git 忽略 |
+| `assets/character/` | 原始地址与哈希清单、自动下载与本地处理脚本；模型和生成的 `embedded.js` 被 Git 忽略 |
 | `viewer/` | 不含角色模型的街角观赏版源码和单文件构建脚本 |
 | `tests/`、`qa/` | 自动化测试、手动检查脚本与历史核对记录 |
 | `build.mjs`、`serve.mjs` | 将游戏打包为单个离线 HTML；开启本机预览服务 |
@@ -140,7 +139,7 @@ npm run test:source
 npm run serve
 ```
 
-`npm test` 检查控制、相机、碰撞、背包、交易与角色动作。有本地模型时会运行真实 PMX 骨骼测试；从 GitHub 克隆且尚未安装模型时，该测试明确跳过。`build:viewer` 不需要角色模型，会在项目根目录生成单个可上传 HTML。`audit:secrets` 扫描 Git 候选文件中的常见密钥格式，仅显示文件名和规则；`test:source` 在临时目录验证只含仓库文件的克隆状态。需要重新生成角色动作预览时，先准备本地模型，再运行 `node qa/motion/build-preview.mjs`。
+`npm run build` 会先执行 `prebuild`：在首次运行时从官方原始地址取得模型、核对哈希、仅在本地生成 `embedded.js`，然后打包完整互动版。单独运行 `npm run prepare:character` 也能执行本地素材准备。`npm test` 检查控制、相机、碰撞、背包、交易与角色动作；尚未运行素材准备时，依赖真实 PMX 的测试明确跳过。`build:viewer` 无需角色模型，会在项目根目录生成可上传的观赏版 HTML。`audit:secrets` 扫描 Git 候选文件中的常见密钥格式；`test:source` 验证只有仓库文件的克隆状态。首次下载链路可单独运行 `node qa/check-official-download.mjs` 检查。
 
 <a id="layout"></a>
 
@@ -149,11 +148,11 @@ npm run serve
 | 位置 | 归属 | 说明 |
 | --- | --- | --- |
 | `src/`、`viewer/`、`scripts/`、`assets/motion/`、`docs/` | GitHub 仓库 | 游戏源码、观赏版源码、动作数据、仓库图标与无角色场景预览图 |
-| `assets/character/SOURCE.md`、`assets/character/prepare-assets.mjs` | GitHub 仓库 | 模型来源及本地处理步骤，不含模型数据 |
+| `assets/character/SOURCE.md`、`model-manifest.json`、准备脚本 | GitHub 仓库 | 官方地址、SHA-256、自动下载和本地处理逻辑，不含模型数据 |
 | 项目根目录的 `Varesa-World3D-rainy-corner-viewer-v1.0.0.html` | **Git 忽略；手动传 Release** | 唯一的公开下载文件，已内嵌两份 MIT 许可文本 |
 | `release/` | **Git 忽略** | 预留目录；当前不存放交付文件 |
 | `Output/` | **仅本地；不可作为公开附件** | 包含瓦雷莎模型的完整游戏 HTML、本地游玩包及说明 |
-| `assets/character/official/`、`assets/character/embedded.js` | **仅本地** | 官方原模型、贴图和从其生成的内嵌资源 |
+| `assets/character/varesa-official.zip`、`assets/character/official/`、`assets/character/embedded.js` | **仅本地** | 原始压缩包、解压后的模型与贴图，以及从其生成的内嵌资源 |
 | `node_modules/`、`.runtime/`、`游玩地址.txt` | Git 忽略 | 可重建依赖与运行状态 |
 
 **请使用 Git 或 GitHub Desktop 提交仓库文件**；不要把整个本地目录打包或拖入 GitHub 网页上传，因为网页手动上传不会按本地 `.gitignore` 筛选。创建 Release 时，只选择根目录的观赏版 HTML，不选择 `Output/` 的完整互动版文件。
@@ -162,7 +161,7 @@ npm run serve
 
 ## 常见问题
 
-**克隆仓库后为什么没有完整互动版的 HTML？** 该文件内嵌官方角色模型与贴图，因原模型使用说明禁止二次配布，所以仓库只上传源码。按[完整互动版构建步骤](#quick-start)下载原模型并在本地生成；只想看场景可下载[无角色观赏版](#release)。
+**克隆仓库后为什么没有完整互动版的 HTML？** 该文件内嵌官方角色模型与贴图，因原模型使用说明禁止二次配布，所以仓库只上传源码。按[完整互动版构建步骤](#quick-start)执行 `npm ci`、`npm run build`，首次构建会自行从原始地址获取模型；只想看场景可下载[无角色观赏版](#release)。
 
 **双击 HTML 和运行 `start.bat` 有什么区别？** 已构建的主 HTML 可以直接离线游玩；`start.bat` 会启动服务，适合自动打开本机页面或给同一局域网、外网的朋友网址。
 

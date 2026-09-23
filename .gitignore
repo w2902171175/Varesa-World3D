@@ -17,7 +17,7 @@
 /archive/
 
 # Official character download, extracted model/textures, and derived bundle.
-# Keep SOURCE.md and prepare-assets.mjs in the repository.
+# Keep SOURCE.md, model-manifest.json and the preparation scripts in Git.
 /assets/character/official/
 /assets/character/varesa-official.zip
 /assets/character/embedded.js

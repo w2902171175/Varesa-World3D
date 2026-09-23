@@ -1,0 +1,21 @@
+{
+  "archive": {
+    "url": "https://activity.hdslb.com/blackboard/static/20250317/c6e19b806b80786dbd92b712c3f459cf/HZToqOXWsk.zip",
+    "sha256": "2089B4691B576CA5C7F4D83D990600CFB05653D34066DF50DAD393BE96A1302E",
+    "filenameEncoding": "gbk",
+    "filename": "varesa-official.zip"
+  },
+  "requiredFiles": [
+    "瓦雷莎.pmx",
+    "tex/颜.png",
+    "skin.bmp",
+    "tex/髮.png",
+    "hair.bmp",
+    "tex/体.png",
+    "toon_defo.bmp",
+    "tex/肌.png",
+    "tex/面具.png",
+    "tex/spa_h.png",
+    "sph/hair_s.bmp"
+  ]
+}

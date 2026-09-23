@@ -6,6 +6,7 @@ Retrieved 2026-09-12 for this local personal scene.
 - The first “模型下载” card is visibly labelled “瓦雷莎”. Its original image is preserved as `official-reference.png`.
 - Model archive linked directly by that campaign: https://activity.hdslb.com/blackboard/static/20250317/c6e19b806b80786dbd92b712c3f459cf/HZToqOXWsk.zip
 - Archive SHA-256: `2089B4691B576CA5C7F4D83D990600CFB05653D34066DF50DAD393BE96A1302E`.
+- `model-manifest.json` stores this original URL, expected hash, GBK filename encoding and the files needed by the game. `npm run build` prepares missing files locally before bundling; no model bytes are committed to Git.
 - Original model provider: **miHoYo**. MMD adaptation: **观海** (Bilibili 观海子).
 - The original archive and its `readme【一定要看】.txt` are retained in local working copies only and excluded from the public source repository. The ZIP uses GBK filenames; the readme itself is UTF-8.
 
