@@ -52,15 +52,9 @@ Varesa World 3D 是基于 **Three.js** 的第三人称互动场景。便利店�
 
 ## GitHub Release：街角观赏版
 
-准备上传到 [GitHub Releases](https://github.com/w2902171175/Varesa-World3D/releases) 的文件位于本地 `release/`：
+公开交付物只有项目根目录下的 **`Varesa-World3D-rainy-corner-viewer-v1.0.0.html`**。仓库所有者可将这一个文件手动上传到 [GitHub Releases](https://github.com/w2902171175/Varesa-World3D/releases)；下载者直接双击即可离线观赏。
 
-| 本地文件 | 用途 | 上传建议 |
-| --- | --- | --- |
-| `Varesa-World3D-rainy-corner-viewer-v1.0.0.zip` | 观赏版 HTML、使用说明及两份许可证 | **主要 Release 附件** |
-| `Varesa-World3D-rainy-corner-viewer-v1.0.0.html` | 单文件观赏版，下载后可直接双击 | 可选附件 |
-| `UPLOAD-INSTRUCTIONS.txt` | 给上传者的文件清单与区别说明 | 留在本地 |
-
-观赏版支持鼠标拖动旋转、滚轮缩放、右键平移和触屏操作；无需安装 Node.js，也不包含瓦雷莎模型。该 `release/` 目录整体被 `.gitignore` 排除，**由仓库所有者手动上传 ZIP 到 GitHub Release**。源码克隆后运行 `npm ci`、`npm run package:viewer` 可重新生成相同用途的交付文件。
+该 HTML 已内嵌脚本及项目和 Three.js 的 MIT 许可证文本，不需要额外的 ZIP、说明或许可证附件。它支持鼠标拖动旋转、滚轮缩放、右键平移和触屏操作，**不含瓦雷莎人物、背包、购物或角色模型贴图**。源码克隆后运行 `npm ci`、`npm run build:viewer` 即可重新生成。根目录 HTML 和预留的 `release/` 目录都由 `.gitignore` 排除，不会进入源码提交。
 
 <a id="quick-start"></a>
 
@@ -141,13 +135,12 @@ npm run build
 ```powershell
 npm test
 npm run build:viewer
-npm run package:viewer
 npm run audit:secrets
 npm run test:source
 npm run serve
 ```
 
-`npm test` 检查控制、相机、碰撞、背包、交易与角色动作。有本地模型时会运行真实 PMX 骨骼测试；从 GitHub 克隆且尚未安装模型时，该测试明确跳过。`build:viewer` 与 `package:viewer` 不需要角色模型，分别生成观赏版 HTML 和 Release ZIP。`audit:secrets` 扫描 Git 候选文件中的常见密钥格式，仅显示文件名和规则；`test:source` 在临时目录验证只含仓库文件的克隆状态。需要重新生成角色动作预览时，先准备本地模型，再运行 `node qa/motion/build-preview.mjs`。
+`npm test` 检查控制、相机、碰撞、背包、交易与角色动作。有本地模型时会运行真实 PMX 骨骼测试；从 GitHub 克隆且尚未安装模型时，该测试明确跳过。`build:viewer` 不需要角色模型，会在项目根目录生成单个可上传 HTML。`audit:secrets` 扫描 Git 候选文件中的常见密钥格式，仅显示文件名和规则；`test:source` 在临时目录验证只含仓库文件的克隆状态。需要重新生成角色动作预览时，先准备本地模型，再运行 `node qa/motion/build-preview.mjs`。
 
 <a id="layout"></a>
 
@@ -157,12 +150,13 @@ npm run serve
 | --- | --- | --- |
 | `src/`、`viewer/`、`scripts/`、`assets/motion/`、`docs/` | GitHub 仓库 | 游戏源码、观赏版源码、动作数据、仓库图标与无角色场景预览图 |
 | `assets/character/SOURCE.md`、`assets/character/prepare-assets.mjs` | GitHub 仓库 | 模型来源及本地处理步骤，不含模型数据 |
-| `release/` | **Git 忽略；手动传 Release** | 可公开的无角色观赏版 HTML、ZIP 与许可证 |
+| 项目根目录的 `Varesa-World3D-rainy-corner-viewer-v1.0.0.html` | **Git 忽略；手动传 Release** | 唯一的公开下载文件，已内嵌两份 MIT 许可文本 |
+| `release/` | **Git 忽略** | 预留目录；当前不存放交付文件 |
 | `Output/` | **仅本地；不可作为公开附件** | 包含瓦雷莎模型的完整游戏 HTML、本地游玩包及说明 |
 | `assets/character/official/`、`assets/character/embedded.js` | **仅本地** | 官方原模型、贴图和从其生成的内嵌资源 |
 | `node_modules/`、`.runtime/`、`游玩地址.txt` | Git 忽略 | 可重建依赖与运行状态 |
 
-**请使用 Git 或 GitHub Desktop 提交仓库文件**；不要把整个本地目录打包或拖入 GitHub 网页上传，因为网页手动上传不会按本地 `.gitignore` 筛选。Release 上传前请按 `release/UPLOAD-INSTRUCTIONS.txt` 核对附件。
+**请使用 Git 或 GitHub Desktop 提交仓库文件**；不要把整个本地目录打包或拖入 GitHub 网页上传，因为网页手动上传不会按本地 `.gitignore` 筛选。创建 Release 时，只选择根目录的观赏版 HTML，不选择 `Output/` 的完整互动版文件。
 
 <a id="faq"></a>
 

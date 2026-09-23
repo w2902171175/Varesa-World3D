@@ -46,7 +46,7 @@ try{
  if(tested.code!==0)throw new Error('Source-only tests failed:\n'+tested.output);
  const viewer=await run('npm',['run','build:viewer']);
  if(viewer.code!==0)throw new Error('Model-free viewer did not build from public source:\n'+viewer.output);
- const viewerHtml=await readFile(join(snapshot,'release','Varesa-World3D-rainy-corner-viewer-v1.0.0.html'),'utf8');
+ const viewerHtml=await readFile(join(snapshot,'Varesa-World3D-rainy-corner-viewer-v1.0.0.html'),'utf8');
  if(!viewerHtml.includes('雨夜街角观赏版')||viewerHtml.length<100000)throw new Error('Model-free viewer output is incomplete');
  const built=await run(process.execPath,['build.mjs']);
  if(built.code===0||!built.output.includes('缺少本地角色资源'))throw new Error('Missing-model build message was not clear:\n'+built.output);
