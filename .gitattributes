@@ -13,6 +13,7 @@
 *.svg text eol=lf
 *.json text eol=lf
 *.md text eol=lf
+Varesa-World3D.html text eol=lf whitespace=-blank-at-eol
 
 # Preserve the original CMU capture files byte-for-byte, including their
 # intentional spacing. Generated cycles.js remains normal source text.

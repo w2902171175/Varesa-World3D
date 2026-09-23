@@ -30,7 +30,7 @@ Varesa World 3D 是基于 **Three.js** 的第三人称互动场景。便利店�
   <p><sub>可公开下载的街角观赏版画面，不含人物与购物玩法</sub></p>
 </div>
 
-> **关于两个版本**：GitHub 仓库提供源码与构建脚本；Release 可提供**无角色的街角观赏版**。完整互动版的 HTML 内嵌官方角色模型与贴图；原模型说明禁止二次配布，所以该 HTML 和本地游玩包保留在各自电脑上。克隆仓库后运行 `npm run build`，脚本会从[原始发布地址](assets/character/SOURCE.md)获取并校验模型，在本地生成游戏，不需要手工解压。
+> **关于两个版本**：GitHub 仓库提供源码与可直接下载的**无角色街角观赏版**。完整互动版的 HTML 内嵌官方角色模型与贴图；原模型说明禁止二次配布，所以该 HTML 和本地游玩包保留在各自电脑上。克隆仓库后运行 `npm run build`，脚本会从[原始发布地址](assets/character/SOURCE.md)获取并校验模型，在本地生成游戏，不需要手工解压。
 
 <a id="features"></a>
 
@@ -50,11 +50,11 @@ Varesa World 3D 是基于 **Three.js** 的第三人称互动场景。便利店�
 
 <a id="release"></a>
 
-## GitHub Release：街角观赏版
+## 下载街角观赏版
 
-公开交付物只有项目根目录下的 **`Varesa-World3D-rainy-corner-viewer-v1.0.0.html`**。仓库所有者可将这一个文件手动上传到 [GitHub Releases](https://github.com/w2902171175/Varesa-World3D/releases)；下载者直接双击即可离线观赏。
+仓库根目录直接提供 **[Varesa-World3D.html](Varesa-World3D.html)**。在 GitHub 文件页面下载原始文件并保存到本机，双击即可离线观赏；无需安装 Node.js 或下载角色模型。
 
-该 HTML 已内嵌脚本及项目和 Three.js 的 MIT 许可证文本，不需要额外的 ZIP、说明或许可证附件。它支持鼠标拖动旋转、滚轮缩放、右键平移和触屏操作，**不含瓦雷莎人物、背包、购物或角色模型贴图**。源码克隆后运行 `npm ci`、`npm run build:viewer` 即可重新生成。根目录 HTML 和预留的 `release/` 目录都由 `.gitignore` 排除，不会进入源码提交。
+该 HTML 已内嵌脚本及项目和 Three.js 的 MIT 许可证文本，不需要额外的 ZIP、说明或许可证附件。它支持鼠标拖动旋转、滚轮缩放、右键平移和触屏操作，**不含瓦雷莎人物、背包、购物或角色模型贴图**。源码克隆后运行 `npm ci`、`npm run build:viewer` 即可在原位置重新生成。
 
 <a id="quick-start"></a>
 
@@ -149,19 +149,19 @@ npm run serve
 | --- | --- | --- |
 | `src/`、`viewer/`、`scripts/`、`assets/motion/`、`docs/` | GitHub 仓库 | 游戏源码、观赏版源码、动作数据、仓库图标与无角色场景预览图 |
 | `assets/character/SOURCE.md`、`model-manifest.json`、准备脚本 | GitHub 仓库 | 官方地址、SHA-256、自动下载和本地处理逻辑，不含模型数据 |
-| 项目根目录的 `Varesa-World3D-rainy-corner-viewer-v1.0.0.html` | **Git 忽略；手动传 Release** | 唯一的公开下载文件，已内嵌两份 MIT 许可文本 |
+| 项目根目录的 `Varesa-World3D.html` | **GitHub 仓库** | 可直接下载的无角色观赏版，已内嵌两份 MIT 许可文本 |
 | `release/` | **Git 忽略** | 预留目录；当前不存放交付文件 |
 | `Output/` | **仅本地；不可作为公开附件** | 包含瓦雷莎模型的完整游戏 HTML、本地游玩包及说明 |
 | `assets/character/varesa-official.zip`、`assets/character/official/`、`assets/character/embedded.js` | **仅本地** | 原始压缩包、解压后的模型与贴图，以及从其生成的内嵌资源 |
 | `node_modules/`、`.runtime/`、`游玩地址.txt` | Git 忽略 | 可重建依赖与运行状态 |
 
-**请使用 Git 或 GitHub Desktop 提交仓库文件**；不要把整个本地目录打包或拖入 GitHub 网页上传，因为网页手动上传不会按本地 `.gitignore` 筛选。创建 Release 时，只选择根目录的观赏版 HTML，不选择 `Output/` 的完整互动版文件。
+**请使用 Git 或 GitHub Desktop 提交仓库文件**；不要把整个本地目录打包或拖入 GitHub 网页上传，因为网页手动上传不会按本地 `.gitignore` 筛选。若以后创建 Release，只选择根目录的观赏版 HTML，不选择 `Output/` 的完整互动版文件。
 
 <a id="faq"></a>
 
 ## 常见问题
 
-**克隆仓库后为什么没有完整互动版的 HTML？** 该文件内嵌官方角色模型与贴图，因原模型使用说明禁止二次配布，所以仓库只上传源码。按[完整互动版构建步骤](#quick-start)执行 `npm ci`、`npm run build`，首次构建会自行从原始地址获取模型；只想看场景可下载[无角色观赏版](#release)。
+**克隆仓库后为什么没有完整互动版的 HTML？** 该文件内嵌官方角色模型与贴图，因原模型使用说明禁止二次配布，所以完整互动版只在本地构建。按[完整互动版构建步骤](#quick-start)执行 `npm ci`、`npm run build`，首次构建会自行从原始地址获取模型；只想看场景可下载[无角色观赏版](#release)。
 
 **双击 HTML 和运行 `start.bat` 有什么区别？** 已构建的主 HTML 可以直接离线游玩；`start.bat` 会启动服务，适合自动打开本机页面或给同一局域网、外网的朋友网址。
 

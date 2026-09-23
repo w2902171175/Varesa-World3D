@@ -4,14 +4,14 @@ import {dirname,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
-const htmlName='Varesa-World3D-rainy-corner-viewer-v1.0.0.html';
+const htmlName='Varesa-World3D.html';
 
 const result=await build({entryPoints:[join(root,'viewer','src','main.js')],bundle:true,format:'iife',target:'es2020',minify:true,write:false,legalComments:'inline',metafile:true});
 if(Object.keys(result.metafile.inputs).some(path=>/assets[/\\]character|src[/\\]character|MMDLoader/i.test(path)))throw new Error('Release viewer unexpectedly depends on the licensed character model.');
 
 const script=result.outputFiles[0].text.replaceAll('</script','<\\/script');
-const projectLicense=await readFile(join(root,'LICENSE'),'utf8');
-const threeLicense=await readFile(join(root,'node_modules','three','LICENSE'),'utf8');
+const projectLicense=(await readFile(join(root,'LICENSE'),'utf8')).replaceAll('\r\n','\n');
+const threeLicense=(await readFile(join(root,'node_modules','three','LICENSE'),'utf8')).replaceAll('\r\n','\n');
 const licenseNotice=`<!--\nProject source — MIT License\n${projectLicense}\n\nThree.js — MIT License\n${threeLicense}\n-->`;
 const html=`<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#101b2a"><title>雨宿り · 雨夜街角观赏版</title>${licenseNotice}<style>

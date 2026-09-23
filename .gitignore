@@ -10,9 +10,8 @@
 # Generated playable builds and historical copies. The playable HTML embeds
 # the third-party character model and textures, so it is local-only.
 /Output/
-# Local upload artifacts. The standalone viewer is handed to GitHub Release,
-# not committed into the source tree. Keep release/ ignored for future assets.
-/Varesa-World3D-rainy-corner-viewer-v1.0.0.html
+# The model-free Varesa-World3D.html is tracked in the repository.
+# Keep release/ ignored for any future local packaging files.
 /release/
 /archive/
 

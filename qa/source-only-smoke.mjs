@@ -44,10 +44,12 @@ try{
  if(installed.code!==0)throw new Error('Clean install failed:\n'+installed.output);
  const tested=await run('npm',['test']);
  if(tested.code!==0)throw new Error('Source-only tests failed:\n'+tested.output);
+ const committedViewer=await readFile(join(snapshot,'Varesa-World3D.html'),'utf8');
  const viewer=await run('npm',['run','build:viewer']);
  if(viewer.code!==0)throw new Error('Model-free viewer did not build from public source:\n'+viewer.output);
- const viewerHtml=await readFile(join(snapshot,'Varesa-World3D-rainy-corner-viewer-v1.0.0.html'),'utf8');
+ const viewerHtml=await readFile(join(snapshot,'Varesa-World3D.html'),'utf8');
  if(!viewerHtml.includes('雨夜街角观赏版')||viewerHtml.length<100000)throw new Error('Model-free viewer output is incomplete');
+ if(viewerHtml!==committedViewer)throw new Error('Committed viewer HTML differs from npm run build:viewer output');
  const built=await run(process.execPath,['build.mjs']);
  if(built.code===0||!built.output.includes('缺少本地角色资源'))throw new Error('Missing-model build message was not clear:\n'+built.output);
  const summary=tested.output.match(/# tests \d+[\s\S]*?# duration_ms [\d.]+/)?.[0];
